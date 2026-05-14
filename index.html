@@ -43,6 +43,9 @@
                             <option value="allahu-akbar">الله أكبر</option>
                             <option value="la-ilaha">لا إله إلا الله</option>
                             <option value="astagh-fir">أستغفر الله</option>
+                            <option value="allahumma-salli">اللهم صل على محمد</option>
+                            <option value="la-hawla">لا حول ولا قوة إلا بالله</option>
+                            <option value="subhan-allahi-wabihamdihi">سبحان الله وبحمده</option>
                             <option value="custom">مخصص</option>
                         </select>
                     </div>
@@ -162,9 +165,58 @@
         </footer>
     </div>
 
+    <!-- زر فتح التقييم -->
+    <div class="rating-trigger">
+        <button onclick="openRating()" class="rating-btn">⭐ تقييم</button>
+    </div>
+
+    <!-- نافذة التقييم الاحترافية -->
+    <div class="rating-popup" id="ratingPopup">
+        <div class="rating-box">
+            <button class="rating-close-icon" onclick="closeRating()">✕</button>
+            
+            <div class="rating-header">
+                <h3>كيف كانت تجربتك؟</h3>
+                <p>رأيك مهم لنا جداً</p>
+            </div>
+
+            <div class="stars" id="stars">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+            </div>
+
+            <div class="rating-labels">
+                <span class="label" data-value="1">سيئ</span>
+                <span class="label" data-value="2">مقبول</span>
+                <span class="label" data-value="3">جيد</span>
+                <span class="label" data-value="4">ممتاز</span>
+                <span class="label" data-value="5">رائع جداً</span>
+            </div>
+
+            <div class="rating-message" id="ratingMessage">اختر عدد النجوم</div>
+
+            <textarea id="feedback-text" class="feedback-input" placeholder="اترك تعليقك (اختياري)" style="display: none;"></textarea>
+
+            <button class="submit-rating-btn" id="submitRatingBtn" onclick="submitRating()" style="display: none;">إرسال التقييم</button>
+            <button class="close-btn" onclick="closeRating()">إغلاق</button>
+
+            <div class="rating-copyright">
+                © مسبحة - جميع الحقوق محفوظة 🌙
+            </div>
+        </div>
+    </div>
+
+    <!-- رسالة الشكر -->
+    <div id="thankYouMessage" class="thank-you-message">
+        <div class="thank-you-content">
+            <span class="thank-you-icon">✓</span>
+            <p id="thankYouText">شكراً لتقييمك!</p>
+        </div>
+    </div>
+
     <script src="script.js"></script>
-
-
-    
 </body>
 </html>
