@@ -18,7 +18,8 @@ const app = {
     vibrationEnabled: true,
     notificationEnabled: true,
     theme: 'auto',
-    fontSize: 'medium'
+    fontSize: 'medium',
+    ratings: []
 };
 
 // قاموس الأذكار
@@ -151,7 +152,6 @@ function updateGoalProgress() {
 function playSound() {
     if (!app.soundEnabled) return;
     
-    // إنشاء صوت بسيط
     try {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const oscillator = audioContext.createOscillator();
@@ -258,7 +258,8 @@ function updateDhikrList() {
         dhikrItem.onclick = () => {
             app.currentDhikr = key;
             document.getElementById('dhikr-select').value = key;
-            document.getElementById('custom-dhikr').style.display = 'none';
+            const customInput = document.getElementById('custom-dhikr');
+            if (customInput) customInput.style.display = 'none';
             saveData();
         };
         dhikrListDiv.appendChild(dhikrItem);
@@ -462,6 +463,162 @@ function setupKeyboardShortcuts() {
     });
 }
 
+// ========================= وظائف التقييم =========================
+
+let currentRating = 0;
+
+function openRating() {
+    const popup = document.getElementById('ratingPopup');
+    popup.classList.add('show');
+    currentRating = 0;
+    resetRatingUI();
+}
+
+function closeRating() {
+    const popup = document.getElementById('ratingPopup');
+    popup.classList.remove('show');
+    currentRating = 0;
+    resetRatingUI();
+}
+
+function resetRatingUI() {
+    const stars = document.querySelectorAll('.star');
+    const labels = document.querySelectorAll('.label');
+    const message = document.getElementById('ratingMessage');
+    const feedbackText = document.getElementById('feedback-text');
+    const submitBtn = document.getElementById('submitRatingBtn');
+    
+    stars.forEach(star => star.classList.remove('active'));
+    labels.forEach(label => label.classList.remove('active'));
+    
+    message.textContent = 'اختر عدد النجوم';
+    message.classList.remove('rated');
+    feedbackText.style.display = 'none';
+    submitBtn.style.display = 'none';
+}
+
+function setupRating() {
+    const stars = document.querySelectorAll('.star');
+    const labels = document.querySelectorAll('.label');
+    const message = document.getElementById('ratingMessage');
+    const feedbackText = document.getElementById('feedback-text');
+    const submitBtn = document.getElementById('submitRatingBtn');
+    
+    stars.forEach(star => {
+        star.addEventListener('click', () => {
+            currentRating = parseInt(star.getAttribute('data-value'));
+            
+            // تحديث النجوم
+            stars.forEach(s => s.classList.remove('active'));
+            for (let i = 0; i < currentRating; i++) {
+                stars[i].classList.add('active');
+            }
+            
+            // تحديث التسميات
+            labels.forEach(l => l.classList.remove('active'));
+            labels[currentRating - 1].classList.add('active');
+            
+            // تحديث الرسالة
+            const messages = [
+                'نعتذر لعدم إعجابك بالموقع',
+                'نسعى لتحسين الخدمة',
+                'شكراً على التقييم',
+                'شكراً على تقييمك الممتاز',
+                'شكراً! نسعى للأفضل دائماً'
+            ];
+            
+            message.textContent = 'تقييمك: ' + currentRating + '/5 - ' + messages[currentRating - 1];
+            message.classList.add('rated');
+            
+            // إظهار حقل التعليق والزر
+            feedbackText.style.display = 'block';
+            submitBtn.style.display = 'block';
+            
+            // تشغيل صوت
+            if (app.soundEnabled) {
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+                    osc.frequency.value = 600 + (currentRating * 100);
+                    gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                    osc.start(audioContext.currentTime);
+                    osc.stop(audioContext.currentTime + 0.2);
+                } catch (e) {}
+            }
+        });
+        
+        // تأثير Hover
+        star.addEventListener('mouseenter', () => {
+            const value = parseInt(star.getAttribute('data-value'));
+            stars.forEach(s => {
+                if (parseInt(s.getAttribute('data-value')) <= value) {
+                    s.style.color = '#f1c40f';
+                } else {
+                    s.style.color = '#555';
+                }
+            });
+        });
+    });
+    
+    document.addEventListener('mouseleave', () => {
+        if (currentRating === 0) {
+            stars.forEach(s => s.style.color = '#555');
+        } else {
+            stars.forEach((s, index) => {
+                if (index < currentRating) {
+                    s.style.color = '#f1c40f';
+                } else {
+                    s.style.color = '#555';
+                }
+            });
+        }
+    });
+}
+
+function submitRating() {
+    if (currentRating === 0) {
+        alert('الرجاء اختيار عدد النجوم');
+        return;
+    }
+    
+    const feedbackText = document.getElementById('feedback-text').value;
+    const rating = {
+        stars: currentRating,
+        feedback: feedbackText,
+        date: new Date().toISOString()
+    };
+    
+    app.ratings.push(rating);
+    saveData();
+    
+    closeRating();
+    showThankYouMessage();
+}
+
+function showThankYouMessage() {
+    const message = document.getElementById('thankYouMessage');
+    const text = document.getElementById('thankYouText');
+    
+    const messages = [
+        'شكراً لتقييمك! 🙏',
+        'نقدر آراءك وملاحظاتك',
+        'سعيد بتقييمك لنا',
+        'شكراً على الثقة بنا',
+        'شكراً لدعمك لنا 💪'
+    ];
+    
+    text.textContent = messages[Math.floor(Math.random() * messages.length)];
+    message.classList.add('show');
+    
+    setTimeout(() => {
+        message.classList.remove('show');
+    }, 4000);
+}
+
 // التهيئة الرئيسية
 document.addEventListener('DOMContentLoaded', () => {
     loadData();
@@ -470,6 +627,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupSettings();
     setupQuickButtons();
     setupKeyboardShortcuts();
+    setupRating();
     updateDisplay();
     updateDhikrList();
     updateStats();
@@ -501,3 +659,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // تحديث الإحصائيات كل ثانية
 setInterval(updateStats, 1000);
+
+// إغلاق Popup عند الضغط خارجها
+document.addEventListener('click', (e) => {
+    const popup = document.getElementById('ratingPopup');
+    if (e.target === popup) {
+        closeRating();
+    }
+});
