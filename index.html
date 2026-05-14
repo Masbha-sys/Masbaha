@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مسبحة - السبحة الإسلامية الذكية</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2c3e50">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🌙 مسبحة</h1>
+            <p class="subtitle">السبحة الإسلامية الذكية</p>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <button class="nav-btn active" data-tab="counter">العداد</button>
+            <button class="nav-btn" data-tab="dhikr">الأذكار</button>
+            <button class="nav-btn" data-tab="settings">الإعدادات</button>
+        </nav>
+
+        <!-- Tab Content -->
+        <main class="tabs-container">
+            <!-- Counter Tab -->
+            <div id="counter" class="tab-content active">
+                <div class="counter-section">
+                    <div class="display-area">
+                        <div class="counter-display">
+                            <span id="counter-value">0</span>
+                        </div>
+                        <p class="counter-label">عدد التسبيحات</p>
+                    </div>
+
+                    <div class="dhikr-selector">
+                        <label for="dhikr-select">اختر الذكر:</label>
+                        <select id="dhikr-select">
+                            <option value="subhan-allah">سبحان الله</option>
+                            <option value="alhamdulillah">الحمد لله</option>
+                            <option value="allahu-akbar">الله أكبر</option>
+                            <option value="la-ilaha">لا إله إلا الله</option>
+                            <option value="astagh-fir">أستغفر الله</option>
+                            <option value="custom">مخصص</option>
+                        </select>
+                    </div>
+
+                    <input 
+                        type="text" 
+                        id="custom-dhikr" 
+                        class="custom-dhikr-input" 
+                        placeholder="أدخل الذكر المخصص"
+                        style="display: none;"
+                    >
+
+                    <div class="button-group">
+                        <button id="add-btn" class="btn btn-primary">+</button>
+                        <button id="reset-btn" class="btn btn-secondary">إعادة تعيين</button>
+                        <button id="undo-btn" class="btn btn-warning">تراجع</button>
+                    </div>
+
+                    <div class="quick-buttons">
+                        <button class="quick-btn" data-increment="10">+10</button>
+                        <button class="quick-btn" data-increment="33">+33</button>
+                        <button class="quick-btn" data-increment="99">+99</button>
+                        <button class="quick-btn" data-increment="100">+100</button>
+                    </div>
+
+                    <div class="goal-section">
+                        <label for="goal-input">الهدف:</label>
+                        <input type="number" id="goal-input" placeholder="أدخل الهدف" min="1">
+                        <button id="set-goal-btn" class="btn btn-small">تعيين الهدف</button>
+                        <div id="goal-progress" class="progress-bar">
+                            <div id="progress-fill" class="progress-fill"></div>
+                        </div>
+                        <p id="goal-text" class="goal-text"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dhikr Tab -->
+            <div id="dhikr" class="tab-content">
+                <div class="dhikr-section">
+                    <h2>الأذكار الإسلامية</h2>
+                    <div id="dhikr-list" class="dhikr-list">
+                        <!-- سيتم ملؤها بـ JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings" class="tab-content">
+                <div class="settings-section">
+                    <h2>الإعدادات</h2>
+                    
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="sound-toggle" checked>
+                            تفعيل الصوت
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="vibration-toggle" checked>
+                            تفعيل الاهتزاز
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="notification-toggle" checked>
+                            إشعارات الهدف
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <label for="theme-select">المظهر:</label>
+                        <select id="theme-select">
+                            <option value="light">فاتح</option>
+                            <option value="dark">داكن</option>
+                            <option value="auto">تلقائي</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-item">
+                        <label for="font-size-select">حجم الخط:</label>
+                        <select id="font-size-select">
+                            <option value="small">صغير</option>
+                            <option value="medium" selected>متوسط</option>
+                            <option value="large">كبير</option>
+                            <option value="xlarge">كبير جداً</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-item">
+                        <button id="export-btn" class="btn btn-secondary">تصدير البيانات</button>
+                        <button id="import-btn" class="btn btn-secondary">استيراد البيانات</button>
+                        <input type="file" id="import-file" accept=".json" style="display: none;">
+                    </div>
+
+                    <div class="setting-item">
+                        <button id="reset-all-btn" class="btn btn-danger">إعادة تعيين الكل</button>
+                    </div>
+
+                    <div class="stats-section">
+                        <h3>الإحصائيات</h3>
+                        <p>إجمالي التسبيحات اليوم: <strong id="today-stats">0</strong></p>
+                        <p>إجمالي التسبيحات: <strong id="total-stats">0</strong></p>
+                        <p>أفضل يوم: <strong id="best-day-stats">0</strong></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>جزاك الله خيراً 🤲</p>
+            <p class="footer-text">اللهم اجعل عملنا خالصاً لوجهك الكريم</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
