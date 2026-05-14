@@ -164,20 +164,41 @@
 
     <script src="script.js"></script>
 
-    <footer style="
+    <div class="footer-bar">
+    <div class="moving-text">
+        جميع الحقوق محفوظة © السبحة الإسلامية الذكية
+    </div>
+</div>
+
+<style>
+.footer-bar{
     position: fixed;
     bottom: 0;
     width: 100%;
-    background: linear-gradient(90deg,#111,#333);
-    color: #fff;
-    text-align: center;
-    padding: 15px;
+    background: #111;
+    color: white;
+    overflow: hidden;
+    padding: 12px 0;
+    white-space: nowrap;
+}
+
+.moving-text{
+    display: inline-block;
+    padding-right: 100%;
+    animation: moveText 12s linear infinite;
+    font-size: 16px;
     font-family: Arial;
-    font-size: 15px;
-    letter-spacing: 1px;
-">
-    جميع الحقوق محفوظة © المطور ثابت 
-</footer>
+}
+
+@keyframes moveText{
+    from{
+        transform: translateX(-100%);
+    }
+    to{
+        transform: translateX(100%);
+    }
+}
+</style>
 </body>
 </html>
                                               <parameter name="filePath">المطور ثابت محمد 
