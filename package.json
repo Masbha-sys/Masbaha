@@ -1,0 +1,48 @@
+{
+  "name": "masbaha",
+  "version": "1.0.0",
+  "description": "تطبيق ويب متكامل عن السبحة الإسلامية والأذكار - Comprehensive Islamic Tasbeeh Counter Web Application",
+  "main": "index.html",
+  "scripts": {
+    "start": "http-server -p 8000 -c-1",
+    "build": "echo 'No build needed for this project'",
+    "test": "echo 'Tests will be added soon'"
+  },
+  "keywords": [
+    "islamic",
+    "tasbeeh",
+    "counter",
+    "dhikr",
+    "web-app",
+    "pwa",
+    "arabic",
+    "quran",
+    "worship",
+    "remembrance"
+  ],
+  "author": "Masbha-sys",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Masbha-sys/Masbaha.git"
+  },
+  "homepage": "https://github.com/Masbha-sys/Masbaha",
+  "bugs": {
+    "url": "https://github.com/Masbha-sys/Masbaha/issues"
+  },
+  "devDependencies": {
+    "http-server": "^latest"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "keywords": [
+    "islamic",
+    "tasbeeh",
+    "counter",
+    "dhikr",
+    "islamic-app",
+    "pwa",
+    "web-app"
+  ]
+}
